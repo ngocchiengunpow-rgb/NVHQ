@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ôn tập Nghiệp vụ Hải quan (NVHQ)</title>
+  <!-- FontAwesome for beautiful modern UI icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css?v=2.4.0">
+  <!-- Supabase CDN (uncomment when enabling Supabase Online mode) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="icon" type="image/png" href="banhmicamphalogo.png">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- Header with logo and theme toggle -->
+    <header class="glass-card animate-fade-in">
+      <div class="branding">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <img src="banhmicamphalogo.png" alt="Logo" style="width: 44px; height: 44px; border-radius: 10px; box-shadow: var(--shadow-sm); object-fit: cover; border: 1px solid var(--card-border);">
+          <div>
+            <h1 id="app-title" style="margin: 0; font-size: 24px; line-height: 1.2;">Ôn tập NVHQ</h1>
+            <p id="app-subtitle" style="margin: 0; font-size: 11.5px; margin-top: 2px; text-transform: none; letter-spacing: normal; font-weight: 500;">
+              developed by <span style="color: var(--primary); font-weight: 700;">Bánh Mì Cẩm Phả</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integrated Header Countdown -->
+      <div class="header-countdown">
+        <div class="countdown-label">
+          <i class="fa-solid fa-clock-rotate-left timer-pulse"></i>
+          <span>Thi Hải Quan N05-N09:</span>
+        </div>
+        <div class="countdown-digits">
+          <span class="digit-box cd-days">00</span><span class="unit">d</span>
+          <span class="digit-box cd-hours">00</span><span class="unit">h</span>
+          <span class="digit-box cd-mins">00</span><span class="unit">m</span>
+          <span class="digit-box cd-secs">00</span><span class="unit">s</span>
+        </div>
+      </div>
+      <div class="header-controls">
+        <button id="theme-toggle" class="theme-btn" title="Chuyển chế độ Sáng/Tối">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="logout-btn" class="theme-btn" title="Đăng xuất" style="display: none;">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Dashboard stats metrics panel -->
+    <section id="dashboard" class="glass-card dashboard-grid animate-fade-in">
+      <div class="metric-card glass-card">
+        <div class="metric-icon">
+          <i class="fa-solid fa-database"></i>
+        </div>
+        <div class="metric-info">
+          <span id="metric-total-questions" class="metric-val">600</span>
+          <span class="metric-label">Tổng số câu hỏi</span>
+        </div>
+      </div>
+      
+      <div class="metric-card glass-card">
+        <div class="metric-icon success">
+          <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="metric-info">
+          <span id="metric-mastered" class="metric-val">0</span>
+          <span class="metric-label">Đã thuộc lòng</span>
+        </div>
+      </div>
+      
+      <div class="metric-card glass-card">
+        <div class="metric-icon warning">
+          <i class="fa-solid fa-star"></i>
+        </div>
+        <div class="metric-info">
+          <span id="metric-flagged" class="metric-val">0</span>
+          <span class="metric-label">Câu cần ôn lại</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Promotion Cards Container (Always visible across all tabs) -->
+    <section class="glass-card animate-fade-in">
+      <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; max-width: 900px; margin-left: auto; margin-right: auto;">
+        <!-- Extension Promotion Card -->
+        <div class="promo-card glass-card" style="flex: 1; min-width: 280px; text-align: left; display: flex; gap: 12px; align-items: center; border: 1.5px dashed var(--primary); background: var(--primary-light); padding: 16px; border-radius: 16px; margin: 0;">
+          <div style="font-size: 32px; color: var(--primary); flex-shrink: 0;">
+            <i class="fa-brands fa-chrome"></i>
+          </div>
+          <div style="flex: 1;">
+            <h4 style="font-family: var(--font-title); font-weight: 800; font-size: 13.5px; margin-bottom: 4px; color: var(--primary-light-text);">
+              🔥 Tải tài liệu Studocu, Scribd, SlideShare Miễn Phí!
+            </h4>
+            <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.4; margin-bottom: 8px;">
+              Tải PDF tài liệu không giới hạn, hoàn toàn miễn phí từ Studocu, Scribd, SlideShare với tiện ích <strong>Bánh Mì Cẩm Phả</strong>.
+            </p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <a href="https://chromewebstore.google.com/detail/hakfedklifkcbkjakhdaebokggdcnagf?utm_source=item-share-cb" target="_blank" class="btn btn-primary" style="font-size: 11px; padding: 6px 12px; border-radius: 8px; text-decoration: none;">
+                <i class="fa-solid fa-download"></i> Tải Extension
+              </a>
+              <a href="https://tinyurl.com/banhmicampha" target="_blank" class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px; border-radius: 8px; text-decoration: none;">
+                <i class="fa-solid fa-envelope"></i> Liên hệ
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- SPSS & Survey Service Card -->
+        <div class="promo-card glass-card" style="flex: 1; min-width: 280px; text-align: left; display: flex; gap: 12px; align-items: center; border: 1.5px dashed var(--primary); background: var(--primary-light); padding: 16px; border-radius: 16px; margin: 0;">
+          <div style="font-size: 32px; color: var(--primary); flex-shrink: 0;">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div style="flex: 1;">
+            <h4 style="font-family: var(--font-title); font-weight: 800; font-size: 13.5px; margin-bottom: 4px; color: var(--primary-light-text);">
+              📊 Dịch vụ SPSS & Khảo sát NCKH
+            </h4>
+            <p style="font-size: 12.5px; color: var(--text-muted); line-height: 1.4; margin-bottom: 8px;">
+              Thiết kế mô hình nghiên cứu, Thang đo khảo sát, Bảng khảo sát, Điền form khảo sát (từ 100 - 250 mẫu khảo sát), chỉnh sửa số liệu, chạy dữ liệu phần mềm <strong>SPSS 27</strong>.
+            </p>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <a href="https://tinyurl.com/banhmicampha" target="_blank" class="btn btn-primary" style="font-size: 11px; padding: 6px 12px; border-radius: 8px; text-decoration: none;">
+                <i class="fa-solid fa-paper-plane"></i> Liên hệ dịch vụ
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation & Study Mode Selection -->
+    <section class="glass-card controls-card animate-fade-in">
+      <div class="control-tabs" id="tab-container">
+        <button id="tab-dashboard" class="tab-btn active" onclick="switchTab('dashboard-view')">
+          <i class="fa-solid fa-chart-simple"></i> Bảng điều khiển
+        </button>
+        <button id="tab-mock" class="tab-btn" onclick="switchTab('mock-view')">
+          <i class="fa-solid fa-graduation-cap"></i> Thi thử
+        </button>
+        <button id="tab-practice" class="tab-btn" onclick="switchTab('practice-view')">
+          <i class="fa-solid fa-book-open"></i> Luyện tập theo chương
+        </button>
+        <button id="tab-all" class="tab-btn" onclick="switchTab('all-view')">
+          <i class="fa-solid fa-list-check"></i> Tra cứu câu hỏi (600 câu)
+        </button>
+      </div>
+
+      <!-- Filters & Search Row -->
+      <div class="filter-row">
+        <div class="select-box" id="chapter-filter-container">
+          <i class="fa-solid fa-book-open select-icon"></i>
+          <select id="chapter-filter" onchange="handleChapterFilterChange()">
+            <option value="all">Tất cả các chương</option>
+            <option value="CD001">Chương 1. Tổng quan về Hải quan</option>
+            <option value="CD002">Chương 2.1. Hệ thống pháp quy quản lý XNK</option>
+            <option value="CD003">Chương 2.2. Hệ thống pháp quy về xuất xứ hàng hóa</option>
+            <option value="CD004">Chương 2.3. Cơ sở pháp quy về thuế XNK</option>
+            <option value="CD005">Chương 2.4. Xác định trị giá hải quan đối với hàng XNK</option>
+            <option value="CD006">Chương 3.1. Thủ tục hải quan</option>
+            <option value="CD007">Chương 3.2. ECUS</option>
+            <option value="CD008">Chương 3.3. Quản lý rủi ro trong hoạt động hải quan</option>
+            <option value="CD009">Chương 3.4. Mã HS</option>
+            <option value="CD010">Chương 4.1. Kiểm tra hải quan</option>
+            <option value="CD011">Chương 4.2. Giám sát hải quan</option>
+            <option value="CD012">Chương 4.3. Kiểm tra sau thông quan</option>
+          </select>
+        </div>
+        
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="search-input" placeholder="Tìm kiếm từ khóa câu hỏi hoặc đáp án..." oninput="handleSearch()">
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Active Workspace View -->
+    <main class="glass-card quiz-card animate-fade-in" id="workspace-view">
+      
+      <!-- Welcome / Dashboard View -->
+      <div id="view-dashboard-view" class="view-panel active">
+        <div style="text-align:center; padding: 40px 10px;">
+          <i class="fa-solid fa-graduation-cap" style="font-size: 72px; color: var(--primary); margin-bottom: 20px;"></i>
+          <h2 style="font-family: var(--font-title); font-size: 24px; font-weight: 800; margin-bottom: 12px;">Chào mừng bạn!</h2>
+          <p style="color: var(--text-muted); font-size: 15px; max-width: 600px; margin: 0 auto 24px; line-height: 1.6;">
+            Chào mừng bạn đến với hệ thống ôn tập Nghiệp vụ Hải quan (NVHQ). Toàn bộ 600 câu hỏi chính thức đã được trích xuất an toàn và giải mã đáp án chính xác!
+          </p>
+          <div style="display:flex; justify-content:center; gap: 12px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="switchTab('mock-view')">
+              <i class="fa-solid fa-play"></i> Thi thử ngay
+            </button>
+            <button class="btn btn-secondary" onclick="switchTab('practice-view')">
+              <i class="fa-solid fa-book-open"></i> Luyện tập chương
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Mock Exam / Quiz Practice View -->
+      <div id="view-mock-view" class="view-panel" style="display:none;">
+        
+        <!-- Quiz Initial / Config Area -->
+        <div id="quiz-config-area" style="text-align:center; padding: 40px 10px; max-width: 500px; margin: 0 auto;">
+          <i class="fa-solid fa-stopwatch" style="font-size: 64px; color: var(--primary); margin-bottom: 16px;"></i>
+          <h3 style="font-family: var(--font-title); font-size: 22px; font-weight: 800; margin-bottom: 10px;">Cấu hình thi thử Nghiệp vụ Hải quan</h3>
+          <p style="color:var(--text-muted); font-size:14px; margin-bottom: 20px;">
+            Chọn số lượng câu hỏi bạn muốn làm. Thời gian làm bài tương ứng là 1 phút cho mỗi câu hỏi.
+          </p>
+          
+          <div style="margin-bottom: 24px; text-align: left;">
+            <label for="mock-question-count" style="display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">
+              <i class="fa-solid fa-list-ol"></i> Số lượng câu hỏi thi thử
+            </label>
+            <div class="select-box" style="width: 100%;">
+              <i class="fa-solid fa-list-check select-icon"></i>
+              <select id="mock-question-count" style="width: 100%;">
+                <option value="10">10 câu (Thời gian: 10 phút)</option>
+                <option value="20">20 câu (Thời gian: 20 phút)</option>
+                <option value="30">30 câu (Thời gian: 30 phút)</option>
+                <option value="40">40 câu (Thời gian: 40 phút)</option>
+                <option value="50">50 câu (Thời gian: 50 phút)</option>
+                <option value="100">100 câu (Thời gian: 100 phút)</option>
+                <option value="all">Tất cả câu hỏi (600 câu - Không giới hạn thời gian)</option>
+              </select>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary btn-lg" onclick="startMockExam()" style="width: 100%;">
+            Bắt đầu thi thử
+          </button>
+        </div>
+
+        <!-- Quiz Engine Area (Active State) -->
+        <div id="quiz-active-area" style="display:none;">
+          <div class="quiz-meta-row">
+            <span class="quiz-topic" id="quiz-active-topic">Chương 1. Tổng quan về Hải quan</span>
+            <div style="display:flex; align-items:center; gap: 14px;">
+              <span id="quiz-counter" style="font-size:14px; font-weight:700; color:var(--text-muted);">Câu 1/10</span>
+              <div class="quiz-timer" id="quiz-timer-box">
+                <i class="fa-regular fa-clock"></i> <span id="quiz-timer-display">10:00</span>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin: 20px 0;">
+            <p class="question-text" id="quiz-question-text">Câu hỏi đang được tải...</p>
+          </div>
+
+          <div class="options-list" id="quiz-options-box">
+            <!-- Render options dynamically -->
+          </div>
+
+          <div class="quiz-actions">
+            <button class="btn btn-secondary" id="quiz-prev-btn" onclick="prevQuestion()" disabled title="Bấm phím Mũi tên Trái để quay lại câu trước">
+              <i class="fa-solid fa-arrow-left"></i> Câu trước
+            </button>
+            
+            <div class="progress-bar-container" style="max-width: 300px; margin: 0 16px; flex: 1;">
+              <div class="progress-bar-fill" id="quiz-progress-fill"></div>
+            </div>
+
+            <button class="btn btn-primary" id="quiz-next-btn" onclick="nextQuestion()" title="Bấm phím Mũi tên Phải hoặc Enter để chuyển câu tiếp theo">
+              Tiếp tục <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quiz Results Page -->
+        <div id="quiz-result-area" style="display:none; text-align:center; padding: 24px 10px;">
+          <i class="fa-solid fa-circle-check" style="font-size: 64px; color: var(--success); margin-bottom: 16px;"></i>
+          <h3 style="font-family:var(--font-title); font-size:24px; font-weight:800; margin-bottom: 8px;">Kết quả bài làm của bạn</h3>
+          <p id="result-score-text" style="font-size:20px; font-weight:800; color:var(--primary); margin-bottom: 24px;">Bạn đạt được 8/10 điểm</p>
+          
+          <div id="result-summary-box" style="text-align:left; max-width: 600px; margin:0 auto 24px; padding:16px; border-radius:14px; border:1px solid var(--card-border); background:rgba(255,255,255,0.02);">
+            <!-- Wrong questions list will render here -->
+          </div>
+
+          <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="restartQuiz()">
+              Thi lượt mới
+            </button>
+            <button class="btn btn-secondary" onclick="switchTab('dashboard-view')">
+              Trở về trang chủ
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Chapter Practice View -->
+      <div id="view-practice-view" class="view-panel" style="display:none;">
+        <div id="practice-initial" style="text-align:center; padding: 40px 10px;">
+          <i class="fa-solid fa-book-open" style="font-size: 64px; color: var(--primary); margin-bottom: 16px;"></i>
+          <h3 style="font-family: var(--font-title); font-size: 22px; font-weight: 800; margin-bottom: 10px;">Luyện tập Nghiệp vụ Hải quan theo Chương</h3>
+          <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px; max-width: 500px; margin-left:auto; margin-right:auto;">
+            Hãy chọn một chương từ bộ lọc phía trên để bắt đầu luyện tập toàn bộ câu hỏi của chương đó với đáp án hiện ngay lập tức!
+          </p>
+          <p style="color: var(--primary); font-weight:700;">Hãy chọn chương ở menu lọc bên trên để bắt đầu.</p>
+        </div>
+
+        <div id="practice-active" style="display:none;">
+          <div class="quiz-meta-row">
+            <span class="quiz-topic" id="practice-topic-name">Chương 1</span>
+            <span id="practice-counter" style="font-size:14px; font-weight:700; color:var(--text-muted);">Câu 1/10</span>
+          </div>
+
+          <div style="margin: 20px 0;">
+            <p class="question-text" id="practice-question-text">Câu hỏi luyện tập...</p>
+          </div>
+
+          <div class="options-list" id="practice-options-box">
+            <!-- Practice options dynamically -->
+          </div>
+
+          <div id="practice-explanation-box" style="display:none; margin: 16px 0; padding:12px 16px; border-radius:12px; font-size:14px; line-height:1.5;">
+            <!-- Feedback explanation -->
+          </div>
+
+          <div class="quiz-actions">
+            <button class="btn btn-secondary" id="practice-prev-btn" onclick="prevPracticeQuestion()" title="Bấm phím Mũi tên Trái để quay lại câu trước">
+              <i class="fa-solid fa-arrow-left"></i> Câu trước
+            </button>
+
+            <button class="btn btn-primary" id="practice-next-btn" onclick="nextPracticeQuestion()" title="Bấm phím Mũi tên Phải hoặc Enter để chuyển câu tiếp theo">
+              Tiếp tục <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tra cứu / Database View (600 câu) -->
+      <div id="view-all-view" class="view-panel" style="display:none;">
+        <div id="search-results-counter" class="search-results-text">Hiển thị 600/600 câu hỏi</div>
+        <div class="questions-list-view" id="questions-list-container">
+          <!-- Render 600 questions here dynamically -->
+        </div>
+      </div>
+
+    </main>
+
+
+
+    <!-- Footer with student details -->
+    <footer class="glass-card animate-fade-in">
+      <!-- Donate Button above copyright -->
+      <div style="margin-bottom: 12px;">
+        <button class="btn" id="open-donate-btn" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; border-radius: 12px; font-weight: 700; padding: 10px 20px; font-size: 13.5px; border: none; box-shadow: var(--shadow-sm); cursor: pointer; transition: transform var(--transition-fast);">
+          <i class="fa-solid fa-mug-hot"></i> Mời cà phê nhà phát triển ☕
+        </button>
+      </div>
+      <p>Bản quyền ứng dụng © 2026. Thực hiện bởi: Bánh Mì Cẩm Phả</p>
+      <p style="font-size:12px; margin-top:6px; color: var(--text-muted);">
+        Liên hệ hỗ trợ: <a href="https://tinyurl.com/banhmicampha" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">Bánh Mì Cẩm Phả</a> 
+        | Tải Extension PDF: <a href="https://chromewebstore.google.com/detail/hakfedklifkcbkjakhdaebokggdcnagf?utm_source=item-share-cb" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">Studocu, Scribd, SlideShare</a>
+      </p>
+    </footer>
+
+  </div>
+
+  <!-- Student identity verification login overlay -->
+  <div id="login-overlay">
+    <div class="login-card glass-card">
+      <!-- Corner Logo -->
+      <div class="login-logo-corner">
+        <img src="banhmicamphalogo.png" alt="Logo">
+      </div>
+      <h2>Xác minh học viên</h2>
+      <p class="login-subtitle">Vui lòng nhập thông tin cá nhân của bạn để truy cập hệ thống ôn tập Nghiệp vụ Hải quan</p>
+      
+      <!-- Integrated Login Countdown -->
+      <div class="login-countdown">
+        <div class="countdown-label">
+          <i class="fa-solid fa-clock-rotate-left timer-pulse"></i>
+          <span>Đếm ngược ngày thi N05-N09:</span>
+        </div>
+        <div class="countdown-digits">
+          <span class="digit-box cd-days">00</span><span class="unit">d</span>
+          <span class="digit-box cd-hours">00</span><span class="unit">h</span>
+          <span class="digit-box cd-mins">00</span><span class="unit">m</span>
+          <span class="digit-box cd-secs">00</span><span class="unit">s</span>
+        </div>
+      </div>
+
+      <!-- App Features Introduction -->
+      <div class="login-features">
+        <div class="feature-tag">
+          <i class="fa-solid fa-database"></i>
+          <span>600 câu hỏi</span>
+        </div>
+        <div class="feature-tag">
+          <i class="fa-solid fa-folder-open"></i>
+          <span>Chia theo chương</span>
+        </div>
+        <div class="feature-tag">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>Đáp án chuẩn</span>
+        </div>
+        <div class="feature-tag">
+          <i class="fa-solid fa-ban"></i>
+          <span>Không quảng cáo</span>
+        </div>
+        <div class="feature-tag">
+          <i class="fa-brands fa-chrome"></i>
+          <span>Tải Studocu Free</span>
+        </div>
+        <div class="feature-tag">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Hỗ trợ SPSS</span>
+        </div>
+      </div>
+      
+      <div id="login-error-msg" class="login-error" style="display: none;">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>Thông tin không chính xác! Lưu ý viết tên lớp là ĐH chứ không phải DH (Ví dụ: KTN64ĐH).</span>
+      </div>
+      
+      <form id="login-form" onsubmit="event.preventDefault(); handleLogin();">
+        <div class="input-group">
+          <label for="login-name"><i class="fa-solid fa-user"></i> Họ và tên</label>
+          <input type="text" id="login-name" placeholder="Ví dụ: Nguyễn Bánh Mì Cẩm Phả" required autocomplete="name">
+        </div>
+        <div class="input-group">
+          <label for="login-msv"><i class="fa-solid fa-id-card"></i> Mã sinh viên (MSV)</label>
+          <input type="text" id="login-msv" placeholder="Ví dụ: 103245" required autocomplete="username">
+        </div>
+        <div class="input-group">
+          <label for="login-class"><i class="fa-solid fa-school"></i> Lớp học</label>
+          <input type="text" id="login-class" placeholder="Ví dụ: LQC64ĐH, KTN64CL, KTB65NC..." required autocomplete="organization">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" id="login-submit-btn">
+          <i class="fa-solid fa-key"></i> Xác minh & Ôn tập
+        </button>
+      </form>
+      <div class="login-footer" style="margin-top: 20px; font-size: 11px; text-transform: none;">
+        <p style="margin-bottom: 6px; font-weight: 600;">Hỗ trợ: <a href="https://tinyurl.com/banhmicampha" target="_blank" style="color: var(--primary); text-decoration: none;">Bánh Mì Cẩm Phả</a></p>
+        <p style="font-size: 10px; color: var(--text-muted);">
+          Tải tiện ích <a href="https://chromewebstore.google.com/detail/hakfedklifkcbkjakhdaebokggdcnagf?utm_source=item-share-cb" target="_blank" style="color: var(--primary); text-decoration: underline;">Tải tài liệu Studocu, Scribd Miễn Phí</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donation Modal Overlay -->
+  <div id="donate-modal" class="modal-overlay" style="display: none;">
+    <div class="donate-card glass-card">
+      <button class="close-btn" id="close-donate-btn">&times;</button>
+      <h3 style="font-family: var(--font-title); font-weight: 800; font-size: 19px; color: var(--warning-text); margin-bottom: 16px;">
+        Mời Tôi Một Ly Cà Phê ☕
+      </h3>
+      <div style="text-align: center; margin-bottom: 16px;">
+        <img src="https://img.vietqr.io/image/HDBank-291704070007289-compact2.png?accountName=Nguyen%20Ngoc%20Chien" alt="VietQR HDBank 291704070007289" style="max-width: 250px; width: 100%; height: auto; border-radius: 12px; box-shadow: var(--shadow-md); border: 1px solid var(--card-border);">
+      </div>
+      <p style="font-size: 14px; font-weight: 800; margin-bottom: 4px; color: var(--text-main);">Nguyễn Ngọc Chiến</p>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 14px;">Ngân hàng HDBank | Số tài khoản: <strong style="color: var(--primary); font-size: 13.5px;">291704070007289</strong></p>
+      <div style="font-size: 12px; color: var(--warning-text); line-height: 1.5; background: var(--warning-light); padding: 10px 14px; border-radius: 12px; text-align: left;">
+        <i class="fa-solid fa-circle-info" style="margin-right: 4px;"></i> Quét mã VietQR bằng bất kỳ ứng dụng ngân hàng hoặc ví điện tử nào tại Việt Nam. Xin chân thành cảm ơn sự ủng hộ của bạn!
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js?v=2.4.0"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+# Intermediate scraper/deobfuscator helpers
+decode_hex.js
+decoded_array.txt
+deobfuscate_dynamic.js
+deobfuscate_script.js
+download_sheet.js
+extract_and_decode.js
+extract_feeds.js
+extract_full_script9.js
+extract_new.js
+extract_qbank.js
+find_url_usage.js
+find_usages.js
+inspect_parent.js
+inspect_script9.js
+inspect_temp.js
+list_brains.js
+read_prev_crawler.js
+read_prev_logs.js
+run_unpacker.js
+run_unpacker_layer2.js
+script9_raw.js
+search_all_brains.js
+unpacked.js
+unpacked_layer2.js
+unpacked_layer2_decoded.js
+unpacked_layer2_deobfuscated.js
+
+# Data file (optional, keeping it ignored to keep repo lightweight)
+question_bank_live.xlsx
+
+.env*
+
+# Local config file with sensitive credentials (never commit!)
+config.js
+
+# Dependency directories
+node_modules/
+package-lock.json
+package.json

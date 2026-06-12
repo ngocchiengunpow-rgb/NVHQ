@@ -1,0 +1,96 @@
+================================================================================
+TÀI LIỆU THAM KHẢO CHÍNH THỨC: LUẬT, NGHỊ ĐỊNH, THÔNG TƯ VỀ NGHIỆP VỤ HẢI QUAN VIỆT NAM (CẬP NHẬT MỚI NHẤT)
+================================================================================
+
+--------------------------------------------------------------------------------
+1. CƠ CẤU TỔ CHỨC CỦA HẢI QUAN VIỆT NAM (Theo Quyết định số 382/QĐ-BTC hiệu lực từ 01/03/2025)
+--------------------------------------------------------------------------------
+- Cơ quan đứng đầu hệ thống Hải quan Việt Nam: Cục Hải quan (ở cấp trung ương, trước đây gọi là Tổng cục Hải quan). Cục Hải quan là cơ quan trực thuộc Bộ Tài chính.
+- Hệ thống tổ chức gồm 3 cấp:
+  + Cấp trung ương: Cục Hải quan (cơ quan đứng đầu hệ thống).
+  + Cấp địa phương/khu vực: 20 Chi cục Hải quan khu vực (được tổ chức, hợp nhất từ các Cục hải quan tỉnh/thành phố và chi cục trực thuộc cũ). Các Chi cục Hải quan khu vực quản lý địa bàn liên tỉnh hoặc một/nhiều tỉnh, thành phố trực thuộc trung ương.
+  + Cấp chi cục trực thuộc (nếu có).
+- Người đứng đầu Cục Hải quan là Cục trưởng Cục Hải quan. Người đứng đầu Chi cục Hải quan khu vực là Chi cục trưởng.
+* LƯU Ý: Đối với các câu hỏi hỏi về "Cơ quan đứng đầu hệ thống Hải quan Việt Nam hiện nay", câu trả lời chuẩn xác là "Cục Hải quan" (không còn Tổng cục Hải quan theo mô hình tổ chức hiệu lực từ 1/3/2025).
+
+--------------------------------------------------------------------------------
+2. TRỊ GIÁ HẢI QUAN & TRỊ GIÁ TÍNH THUẾ HÀNG NHẬP KHẨU (Thông tư 39/2015/TT-BTC & Thông tư 60/2019/TT-BTC)
+--------------------------------------------------------------------------------
+- Trị giá hải quan được xác định chủ yếu dựa trên Phương pháp Trị giá giao dịch của hàng hóa nhập khẩu (giá thực tế đã thanh toán hay sẽ phải thanh toán sau khi điều chỉnh các khoản cộng và khoản trừ).
+- CÁC KHOẢN ĐIỀU CHỈNH CỘNG (Phải cộng vào trị giá tính thuế nếu chưa bao gồm trong giá mua):
+  + Chi phí vận chuyển quốc tế và bảo hiểm quốc tế đến cửa khẩu nhập đầu tiên (cảng nhập đầu tiên).
+    * Giá FOB/EXW: Chưa bao gồm vận chuyển và bảo hiểm quốc tế, do đó bắt buộc PHẢI CỘNG cước vận chuyển (F) và phí bảo hiểm (I) để thành trị giá tính thuế.
+    * Giá CIF/CIP: Đã bao gồm vận chuyển và bảo hiểm quốc tế, do đó KHÔNG CỘNG thêm cước vận chuyển và bảo hiểm nữa.
+  + Tiền bản quyền, phí giấy phép: Phải cộng nếu liên quan đến hàng hóa nhập khẩu và người mua phải trả như một điều kiện để thực hiện giao dịch mua bán hàng hóa đó.
+  + Phí đóng gói, chi phí bao bì gắn liền với hàng hóa.
+  + Phí hoa hồng bán hàng và phí môi giới (Lưu ý: Phí hoa hồng mua hàng KHÔNG được cộng vào trị giá tính thuế).
+- CÁC KHOẢN ĐIỀU CHỈNH TRỪ (Được trừ ra khỏi trị giá tính thuế nếu đã bao gồm trong giá mua và có chứng từ tách riêng rõ ràng):
+  + Chi phí cho những hoạt động phát sinh sau khi nhập khẩu (như chi phí xây dựng, lắp đặt, bảo dưỡng, vận chuyển nội địa từ cửa khẩu nhập vào trong nội địa Việt Nam).
+  + Khoản giảm giá.
+  * ĐIỀU KIỆN KHẤU TRỪ KHOẢN GIẢM GIÁ: Khoản giảm giá chỉ được trừ khi thỏa thuận giảm giá được thiết lập TRƯỚC KHI xếp hàng lên phương tiện vận chuyển quốc tế (trước khi giao hàng lên tàu). Nếu thỏa thuận giảm giá được đồng ý hoặc ký kết SAU KHI xếp hàng lên tàu, khoản giảm giá này KHÔNG ĐỦ ĐIỀU KIỆN ĐỂ TRỪ khỏi trị giá tính thuế.
+  * PHÍ DO BÊN BÁN CHI TRẢ (Ví dụ: bên bán đã trả phí vệ sinh container khi bán theo giá CIF/CIP): Đã nằm trong giá bán của hóa đơn thực tế, do đó người mua không phải trả thêm và KHÔNG cộng phí này vào trị giá tính thuế.
+
+--------------------------------------------------------------------------------
+3. 6 PHƯƠNG PHÁP XÁC ĐỊNH TRỊ GIÁ HẢI QUAN HÀNG NHẬP KHẨU (Áp dụng tuần tự)
+--------------------------------------------------------------------------------
+- Việc xác định trị giá phải áp dụng tuần tự theo 6 phương pháp dưới đây cho đến khi xác định được trị giá:
+  1. Phương pháp trị giá giao dịch của hàng hóa nhập khẩu.
+  2. Phương pháp trị giá giao dịch của hàng hóa nhập khẩu giống hệt.
+  3. Phương pháp trị giá giao dịch của hàng hóa nhập khẩu tương tự.
+  4. Phương pháp trị giá khấu trừ.
+  5. Phương pháp trị giá tính toán.
+  6. Phương pháp suy luận.
+- LƯU Ý ĐẶC BIỆT: Trình tự áp dụng phương pháp 4 (Trị giá khấu trừ) và phương pháp 5 (Trị giá tính toán) có thể hoán đổi cho nhau nếu người khai hải quan đề nghị bằng văn bản gửi cơ quan hải quan.
+
+--------------------------------------------------------------------------------
+4. PHÂN LOẠI HÀNG HÓA & MÃ HS (Áp dụng 6 quy tắc tổng quát GRI)
+--------------------------------------------------------------------------------
+- Áp dụng tuần tự từ Quy tắc 1 đến Quy tắc 6. Khi một quy tắc trước đã phân loại được thì dừng lại, không xét tiếp.
+- Quy tắc 1: Tên của các phần, chương và phân chương chỉ có giá trị tra cứu (không có giá trị pháp lý để phân loại). Việc phân loại phải căn cứ vào nội dung nhóm (4 số) và Chú giải Phần hoặc Chương liên quan.
+- Quy tắc 2:
+  + Quy tắc 2(a): Hàng hóa ở dạng chưa hoàn chỉnh, chưa hoàn thiện hoặc chưa lắp ráp (như tháo rời) nhưng đã có đặc trưng cơ bản của hàng hóa hoàn chỉnh thì được phân loại cùng nhóm với hàng hóa hoàn chỉnh.
+  + Quy tắc 2(b): Hỗn hợp hoặc hợp chất của một nguyên liệu/chất được phân loại vào cùng nhóm của chất đó.
+- Quy tắc 3: Áp dụng khi hàng hóa có thể phân loại vào 2 hay nhiều nhóm (sau khi xét Quy tắc 2b):
+  + Quy tắc 3(a): Ưu tiên nhóm mô tả cụ thể nhất thay vì nhóm mô tả chung chung.
+  + Quy tắc 3(b): Hàng hóa hỗn hợp, bộ sản phẩm bán lẻ được phân loại theo nguyên liệu hoặc thành phần mang lại đặc trưng cơ bản của hàng hóa đó.
+  + Quy tắc 3(c): Nếu không áp dụng được 3a và 3b, hàng hóa được phân loại vào nhóm có thứ tự sau cùng (đánh số lớn nhất) trong số các nhóm cùng được xem xét.
+- Quy tắc 4: Phân loại vào nhóm phù hợp với loại hàng hóa giống chúng nhất.
+- Quy tắc 5:
+  + Quy tắc 5(a): Hộp, bao đựng chuyên dụng (bao máy ảnh, hộp đàn, bao kính...) được thiết kế riêng để đựng một sản phẩm cụ thể, dùng lâu dài và được bán cùng sản phẩm đó thì được phân loại cùng với sản phẩm đó.
+  + Quy tắc 5(b): Bao bì thông thường (hộp giấy, túi nilon...) đi kèm hàng hóa được phân loại cùng hàng hóa (không áp dụng nếu bao bì bằng kim loại hoặc dùng được nhiều lần).
+- Quy tắc 6: Việc phân loại hàng hóa vào các phân nhóm (6 số trở lên) phải tuân thủ nội dung của phân nhóm và chú giải phân nhóm đó. Chỉ được so sánh các phân nhóm có cùng cấp độ (ví dụ phân nhóm 1 vạch so với phân nhóm 1 vạch).
+
+--------------------------------------------------------------------------------
+5. THỜI HẠN VÀ THỦ TỤC HẢI QUAN (Theo Luật Hải quan 2014, Thông tư 38/2015/TT-BTC & Thông tư 39/2018/TT-BTC)
+--------------------------------------------------------------------------------
+- THỜI HẠN NỘP TỜ KHAI HẢI QUAN:
+  + Hàng nhập khẩu: Người khai phải nộp tờ khai trước ngày hàng hóa đến cửa khẩu hoặc trong thời hạn 30 ngày kể từ ngày hàng hóa đến cửa khẩu.
+  + Hàng xuất khẩu: Nộp tờ khai sau khi đã tập kết hàng hóa tại địa điểm người khai hải quan thông báo, chậm nhất là 04 giờ trước khi phương tiện vận tải xuất cảnh (đối với hàng chuyển phát nhanh là chậm nhất 02 giờ).
+- THỜI HẠN KIỂM TRA SAU THÔNG QUAN: Thời hạn tiến hành kiểm tra sau thông quan là 05 năm kể từ ngày đăng ký tờ khai hải quan.
+- GIÁ TRỊ PHÁP LÝ CỦA TỜ KHAI HẢI QUAN: Tờ khai hải quan đã đăng ký có giá trị làm thủ tục hải quan trong thời hạn 15 ngày kể từ ngày đăng ký.
+- KẾT QUẢ PHÂN LUỒNG HẢI QUAN:
+  + Luồng Xanh (Code 1): Miễn kiểm tra hồ sơ giấy và miễn kiểm tra thực tế hàng hóa.
+  + Luồng Vàng (Code 2): Kiểm tra chi tiết hồ sơ giấy, miễn kiểm tra thực tế hàng hóa.
+  + Luồng Đỏ (Code 3): Kiểm tra chi tiết hồ sơ giấy và kiểm tra thực tế hàng hóa trực tiếp.
+
+--------------------------------------------------------------------------------
+6. THUẾ XUẤT NHẬP KHẨU VÀ CÁC THUẾ LIÊN QUAN (Luật Thuế Xuất khẩu, Nhập khẩu 2016)
+--------------------------------------------------------------------------------
+- CÁC MẪU GIẤY CHỨNG NHẬN XUẤT XỨ (C/O) ƯU ĐÃI THƯỜNG GẶP:
+  + C/O Form D: Áp dụng cho Hiệp định Thương mại Hàng hóa ASEAN (ATIGA).
+  + C/O Form E: Áp dụng cho Hiệp định Thương mại Tự do ASEAN – Trung Quốc (ACFTA).
+  + C/O Form EUR.1: Áp dụng cho Hiệp định Thương mại Tự do Việt Nam – Liên minh Châu Âu (EVFTA).
+  + C/O Form CPTPP: Áp dụng cho Hiệp định Đối tác Toàn diện và Tiến bộ xuyên Thái Bình Dương (CPTPP).
+  + C/O Form RCEP: Áp dụng cho Hiệp định Đối tác Kinh tế Toàn diện Khu vực (RCEP).
+  + C/O Form AK: Áp dụng cho Hiệp định ASEAN – Hàn Quốc.
+  + C/O Form AJ: Áp dụng cho Hiệp định ASEAN – Nhật Bản.
+  + C/O Form VJ: Áp dụng cho Hiệp định Song phương Việt Nam – Nhật Bản.
+  + C/O Form B: Là C/O không ưu đãi, cấp cho hàng xuất khẩu thông thường.
+- CÔNG THỨC TÍNH THUẾ NHẬP KHẨU VÀ CÁC LOẠI THUẾ TRÊN HÀNG NHẬP KHẨU:
+  * Thuế Nhập khẩu (NK) = Trị giá hải quan (Trị giá tính thuế) x Thuế suất thuế NK.
+  * Thuế Tiêu thụ đặc biệt (TTĐB) = (Trị giá hải quan + Thuế NK) x Thuế suất thuế TTĐB.
+  * Thuế Bảo vệ môi trường (BVMT) = Số lượng hàng hóa chịu thuế x Mức thuế BVMT tuyệt đối trên một đơn vị sản phẩm.
+  * Thuế Giá trị gia tăng (GTGT) = (Trị giá hải quan + Thuế NK + Thuế TTĐB + Thuế BVMT) x Thuế suất thuế GTGT.
+- THỜI HẠN NỘP THUẾ:
+  + Đối với hàng hóa nhập khẩu phục vụ sản xuất xuất khẩu (SXXK): Được miễn thuế nhập khẩu nếu đáp ứng các điều kiện giám sát hải quan.
+  + Hàng hóa nhập khẩu thông thường: Phải nộp thuế trước khi thông quan hoặc giải phóng hàng hóa (trừ khi được bảo lãnh thuế hoặc thuộc đối tượng doanh nghiệp ưu tiên nộp chậm vào ngày 10 của tháng tiếp theo).
