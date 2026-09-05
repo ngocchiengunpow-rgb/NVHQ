@@ -35,8 +35,8 @@ let QUESTION_BANK = [];
 const USE_SUPABASE = true;
 // NOTE: SUPABASE_URL and SUPABASE_ANON_KEY are loaded from config.js (gitignored)
 // See config.example.js for the template. Create config.js locally with your credentials.
-const SUPABASE_URL = window.SUPABASE_URL || "";
-const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "";
+const SUPABASE_URL = window.SUPABASE_URL || "https://zfnatlvlykktrqeuwlye.supabase.co";
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "sb_publishable_MMtOfXQn251GjODjDdzFtg_uGLMHfe8";
 
 let supabaseClient = null;
 if (USE_SUPABASE && typeof supabase !== 'undefined') {
@@ -199,6 +199,42 @@ async function handleLogin() {
     // Restore button state
     submitBtn.disabled = false;
     submitBtn.innerHTML = originalBtnContent;
+  }
+}
+
+// Handles guest / unlocked access without requiring student MSV verification
+async function loginAsGuest() {
+  const guestToken = "19b55cd13309c5903780fa483ee13dc0"; // Founder Nguyễn Ngọc Chiến token for full question bank access
+  const guestBtn = document.getElementById('guest-login-btn');
+  const originalHtml = guestBtn ? guestBtn.innerHTML : '';
+  
+  if (guestBtn) {
+    guestBtn.disabled = true;
+    guestBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang mở khóa...';
+  }
+
+  try {
+    localStorage.setItem('nvhq_hoten', 'Học viên tự do');
+    localStorage.setItem('nvhq_lop', 'NVHQ');
+    localStorage.setItem('nvhq_msv', 'GUEST');
+    localStorage.setItem('nvhq_session_token', guestToken);
+    localStorage.setItem('nvhq_authenticated', 'true');
+
+    const loadSuccess = await loadQuestionsFromServer(guestToken);
+    if (loadSuccess) {
+      checkAuthState();
+      renderDashboard();
+    } else {
+      alert("Không thể tải ngân hàng câu hỏi. Vui lòng thử lại!");
+    }
+  } catch (e) {
+    console.error("Guest login error:", e);
+    alert("Đã xảy ra lỗi khi mở khóa. Vui lòng tải lại trang!");
+  } finally {
+    if (guestBtn) {
+      guestBtn.disabled = false;
+      guestBtn.innerHTML = originalHtml;
+    }
   }
 }
 
@@ -941,14 +977,12 @@ function initExamCountdown() {
     const labelEls = document.querySelectorAll('.countdown-label span');
 
     if (timeDiff <= 0) {
-      daysEls.forEach(el => el.textContent = '00');
-      hoursEls.forEach(el => el.textContent = '00');
-      minsEls.forEach(el => el.textContent = '00');
-      secsEls.forEach(el => el.textContent = '00');
+      daysEls.forEach(el => el.textContent = '∞');
+      hoursEls.forEach(el => el.textContent = '∞');
+      minsEls.forEach(el => el.textContent = '∞');
+      secsEls.forEach(el => el.textContent = '∞');
       labelEls.forEach(el => {
-        if (el.textContent.includes('Thi Hải Quan') || el.textContent.includes('Đếm ngược')) {
-          el.textContent = 'Đang thi / Đã kết thúc!';
-        }
+        el.textContent = 'Hệ thống mở ôn tập tự do';
       });
       return;
     }
