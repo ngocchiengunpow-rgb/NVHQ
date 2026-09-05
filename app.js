@@ -1,4 +1,9 @@
 // State variables
+let currentCourse = 'NVHQ'; // 'NVHQ' or 'VNYLT'
+let NVHQ_QUESTION_BANK = (typeof NVHQ_FALLBACK_QUESTIONS !== 'undefined' && Array.isArray(NVHQ_FALLBACK_QUESTIONS)) ? NVHQ_FALLBACK_QUESTIONS : [];
+let VNYLT_QUESTION_BANK = (typeof VNYLT_QUESTIONS !== 'undefined' && Array.isArray(VNYLT_QUESTIONS)) ? VNYLT_QUESTIONS : [];
+let QUESTION_BANK = NVHQ_QUESTION_BANK;
+
 let activeTab = 'dashboard-view';
 let selectedChapter = 'all';
 let searchQuery = '';
@@ -25,16 +30,35 @@ let practiceAnswered = false;
 let masteredQuestions = new Set();
 let reviewQuestions = new Set();
 
-// SKELETON QUESTION BANK (will be replaced with the actual 600 questions database)
-let QUESTION_BANK = [];
+// Chapter / Sets configuration for courses
+const NVHQ_CHAPTERS = [
+  { value: 'all', label: 'Tất cả các chương (600 câu)' },
+  { value: 'CD001', label: 'Chương 1. Tổng quan về Hải quan' },
+  { value: 'CD002', label: 'Chương 2.1. Hệ thống pháp quy quản lý XNK' },
+  { value: 'CD003', label: 'Chương 2.2. Hệ thống pháp quy về xuất xứ hàng hóa' },
+  { value: 'CD004', label: 'Chương 2.3. Cơ sở pháp quy về thuế XNK' },
+  { value: 'CD005', label: 'Chương 2.4. Xác định trị giá hải quan đối với hàng XNK' },
+  { value: 'CD006', label: 'Chương 3.1. Thủ tục hải quan' },
+  { value: 'CD007', label: 'Chương 3.2. ECUS' },
+  { value: 'CD008', label: 'Chương 3.3. Quản lý rủi ro trong hoạt động hải quan' },
+  { value: 'CD009', label: 'Chương 3.4. Mã HS' },
+  { value: 'CD010', label: 'Chương 4.1. Kiểm tra hải quan' },
+  { value: 'CD011', label: 'Chương 4.2. Giám sát hải quan' },
+  { value: 'CD012', label: 'Chương 4.3. Kiểm tra sau thông quan' }
+];
 
-// ==================== STUDENT DIRECTORY & AUTHENTICATION ====================
-// STUDENT_DIRECTORY removed for security
+const VNYLT_CHAPTERS = [
+  { value: 'all', label: 'Tất cả các đợt VNYLT (249 câu)' },
+  { value: 'File 1 (Đợt 1)', label: 'File 1 - Đợt 1 (73 câu)' },
+  { value: 'File 2 (Đợt 1)', label: 'File 2 - Đợt 1 (45 câu)' },
+  { value: 'File 2 (Đợt 2)', label: 'File 2 - Đợt 2 (12 câu)' },
+  { value: 'File 2 (Đợt 3)', label: 'File 2 - Đợt 3 (39 câu)' },
+  { value: 'File 2 (Đợt 4)', label: 'File 2 - Đợt 4 (40 câu)' },
+  { value: 'File 2 (Đợt 5)', label: 'File 2 - Đợt 5 (40 câu)' }
+];
 
 // Supabase Configuration Toggle (Online Mode)
 const USE_SUPABASE = true;
-// NOTE: SUPABASE_URL and SUPABASE_ANON_KEY are loaded from config.js (gitignored)
-// See config.example.js for the template. Create config.js locally with your credentials.
 const SUPABASE_URL = window.SUPABASE_URL || "https://zfnatlvlykktrqeuwlye.supabase.co";
 const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "sb_publishable_MMtOfXQn251GjODjDdzFtg_uGLMHfe8";
 
@@ -43,7 +67,7 @@ if (USE_SUPABASE && typeof supabase !== 'undefined') {
   supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
-// Normalizes input strings for robust verification matches
+// Normalizes input strings
 function normalizeString(str) {
   if (!str) return '';
   return str.toString()
@@ -51,39 +75,27 @@ function normalizeString(str) {
     .normalize('NFC')
     .toLowerCase()
     .replace(/ð/g, 'đ')
-    .replace(/dh/g, 'đh') // Auto replace "dh" with "đh" for easier typing
+    .replace(/dh/g, 'đh')
     .replace(/\s+/g, ' ');
 }
 
-// Checks if the user is authenticated and updates UI overlays
-// Checks if the user is authenticated and updates UI overlays
+// Open access mode: No login overlay required
 function checkAuthState() {
-  const isAuthenticated = !!localStorage.getItem('nvhq_session_token');
   const overlay = document.getElementById('login-overlay');
+  if (overlay) overlay.style.display = 'none';
   const logoutBtn = document.getElementById('logout-btn');
-  
-  if (isAuthenticated) {
-    if (overlay) overlay.classList.add('hidden');
-    if (logoutBtn) logoutBtn.style.display = 'flex';
-  } else {
-    if (overlay) overlay.classList.remove('hidden');
-    if (logoutBtn) logoutBtn.style.display = 'none';
-  }
+  if (logoutBtn) logoutBtn.style.display = 'none';
 
   if (typeof updateAIChatVisibility === 'function') {
     updateAIChatVisibility();
   }
 }
 
-// Dynamic server-side question bank loading
+// Dynamic server-side question bank loading (Supabase)
 async function loadQuestionsFromServer(token) {
-  if (!token) return false;
-  
-  const metricVal = document.getElementById('metric-total-questions');
-  if (metricVal) metricVal.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+  if (!token) token = "19b55cd13309c5903780fa483ee13dc0";
   
   if (typeof supabase === 'undefined' || !supabaseClient) {
-    console.error("Supabase client not initialized.");
     return false;
   }
   
@@ -92,8 +104,7 @@ async function loadQuestionsFromServer(token) {
     if (error) throw error;
     
     if (data && data.length > 0) {
-      // Map lowercase keys from PostgreSQL to camelCase keys expected by client JS
-      QUESTION_BANK = data.map(q => ({
+      NVHQ_QUESTION_BANK = data.map(q => ({
         maCauHoi: q.macauhoi || q.maCauHoi,
         stt: q.stt,
         mucDo: q.mucdo || q.mucDo,
@@ -102,181 +113,110 @@ async function loadQuestionsFromServer(token) {
         options: q.options,
         correctAnswer: q.correctanswer || q.correctAnswer
       }));
-      console.log(`Loaded ${QUESTION_BANK.length} questions dynamically.`);
       
-      // Update dashboard/UI with new questions count
-      renderDashboard();
+      const badgeNvhq = document.getElementById('badge-count-nvhq');
+      if (badgeNvhq) badgeNvhq.textContent = `${NVHQ_QUESTION_BANK.length} câu`;
       
-      // Refresh views if active
-      if (activeTab === 'all-view') {
-        renderAllQuestionsList();
-      } else if (activeTab === 'practice-view') {
-        initPracticeMode();
+      if (currentCourse === 'NVHQ') {
+        QUESTION_BANK = NVHQ_QUESTION_BANK;
+        renderDashboard();
+        if (activeTab === 'all-view') {
+          renderAllQuestionsList();
+        } else if (activeTab === 'practice-view') {
+          initPracticeMode();
+        }
       }
       return true;
-    } else {
-      console.error("Invalid session token or no questions returned.");
-      logout();
-      return false;
     }
   } catch (e) {
-    console.error("Error loading questions:", e);
-    alert("Lỗi tải câu hỏi từ máy chủ. Vui lòng đăng nhập lại!");
-    logout();
-    return false;
+    console.warn("Supabase questions fetch note:", e);
+  }
+  return false;
+}
+
+// Switch Course between NVHQ and VNYLT
+function switchCourse(course) {
+  currentCourse = course;
+  localStorage.setItem('nvhq_current_course', course);
+  selectedChapter = 'all';
+
+  // Toggle active tab buttons
+  const btnNvhq = document.getElementById('course-tab-nvhq');
+  const btnVnylt = document.getElementById('course-tab-vnylt');
+  if (btnNvhq && btnVnylt) {
+    btnNvhq.classList.toggle('active', course === 'NVHQ');
+    btnVnylt.classList.toggle('active', course === 'VNYLT');
+  }
+
+  // Update App title
+  const titleEl = document.getElementById('app-title');
+  if (titleEl) {
+    titleEl.textContent = course === 'NVHQ' ? 'Ôn tập NVHQ' : 'Ôn thi VNYLT 2026';
+  }
+
+  // Update current question bank
+  if (course === 'NVHQ') {
+    QUESTION_BANK = NVHQ_QUESTION_BANK;
+  } else {
+    QUESTION_BANK = VNYLT_QUESTION_BANK;
+  }
+
+  // Update badge counts
+  const badgeNvhq = document.getElementById('badge-count-nvhq');
+  const badgeVnylt = document.getElementById('badge-count-vnylt');
+  if (badgeNvhq) badgeNvhq.textContent = `${NVHQ_QUESTION_BANK.length} câu`;
+  if (badgeVnylt) badgeVnylt.textContent = `${VNYLT_QUESTION_BANK.length} câu`;
+
+  loadProgress();
+  updateChapterFilterDropdown();
+  renderDashboard();
+
+  if (activeTab === 'all-view') {
+    renderAllQuestionsList();
+  } else if (activeTab === 'practice-view') {
+    initPracticeMode();
+  } else if (activeTab === 'mock-view') {
+    resetMockExam();
   }
 }
 
-// Handles student verification login submit via secure RPC
-async function handleLogin() {
-  const nameInput = document.getElementById('login-name').value;
-  const msvInput = document.getElementById('login-msv').value;
-  const classInput = document.getElementById('login-class').value;
-  const errorMsg = document.getElementById('login-error-msg');
-  const loginCard = document.querySelector('.login-card');
-  const submitBtn = document.getElementById('login-submit-btn');
-  
-  // Disable button, show loading state, hide errors
-  submitBtn.disabled = true;
-  const originalBtnContent = submitBtn.innerHTML;
-  submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang xác minh...';
-  if (errorMsg) errorMsg.style.display = 'none';
-  
-  if (typeof supabase === 'undefined') {
-    console.error("Supabase CDN not loaded.");
-    alert("Không thể kết nối đến máy chủ Supabase. Vui lòng tải lại trang!");
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalBtnContent;
-    return;
-  }
-  
-  if (!supabaseClient) {
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  }
-  
-  try {
-    const { data, error } = await supabaseClient.rpc('verify_student', {
-      p_name: nameInput.trim(),
-      p_msv: msvInput.trim(),
-      p_class: classInput.trim()
-    });
-    
-    if (error) throw error;
-    
-    if (data && data.success) {
-      // Save authentication details in localStorage
-      localStorage.setItem('nvhq_hoten', data.name);
-      localStorage.setItem('nvhq_lop', data.class);
-      localStorage.setItem('nvhq_msv', msvInput.trim());
-      localStorage.setItem('nvhq_session_token', data.token);
-      localStorage.setItem('nvhq_authenticated', 'true');
-      
-      // Load questions before continuing
-      const loadSuccess = await loadQuestionsFromServer(data.token);
-      
-      if (loadSuccess) {
-        // Clear login form
-        document.getElementById('login-form').reset();
-        
-        // Transition overlay and update state
-        checkAuthState();
-        renderDashboard();
-      } else {
-        if (errorMsg) errorMsg.style.display = 'flex';
-      }
-    } else {
-      // Invalid credentials
-      if (errorMsg) errorMsg.style.display = 'flex';
-      if (loginCard) {
-        loginCard.classList.add('shake');
-        setTimeout(() => loginCard.classList.remove('shake'), 400);
-      }
-    }
-  } catch (e) {
-    console.error("Supabase auth RPC error:", e);
-    if (errorMsg) errorMsg.style.display = 'flex';
-  } finally {
-    // Restore button state
-    submitBtn.disabled = false;
-    submitBtn.innerHTML = originalBtnContent;
-  }
-}
-
-// Handles guest / unlocked access without requiring student MSV verification
-async function loginAsGuest() {
-  const guestToken = "19b55cd13309c5903780fa483ee13dc0"; // Founder Nguyễn Ngọc Chiến token for full question bank access
-  const guestBtn = document.getElementById('guest-login-btn');
-  const originalHtml = guestBtn ? guestBtn.innerHTML : '';
-  
-  if (guestBtn) {
-    guestBtn.disabled = true;
-    guestBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Đang mở khóa...';
-  }
-
-  try {
-    localStorage.setItem('nvhq_hoten', 'Học viên tự do');
-    localStorage.setItem('nvhq_lop', 'NVHQ');
-    localStorage.setItem('nvhq_msv', 'GUEST');
-    localStorage.setItem('nvhq_session_token', guestToken);
-    localStorage.setItem('nvhq_authenticated', 'true');
-
-    const loadSuccess = await loadQuestionsFromServer(guestToken);
-    if (loadSuccess) {
-      checkAuthState();
-      renderDashboard();
-    } else {
-      alert("Không thể tải ngân hàng câu hỏi. Vui lòng thử lại!");
-    }
-  } catch (e) {
-    console.error("Guest login error:", e);
-    alert("Đã xảy ra lỗi khi mở khóa. Vui lòng tải lại trang!");
-  } finally {
-    if (guestBtn) {
-      guestBtn.disabled = false;
-      guestBtn.innerHTML = originalHtml;
-    }
-  }
-}
-
-// Handles student logout
-function logout() {
-  localStorage.removeItem('nvhq_hoten');
-  localStorage.removeItem('nvhq_msv');
-  localStorage.removeItem('nvhq_lop');
-  localStorage.removeItem('nvhq_session_token');
-  localStorage.removeItem('nvhq_authenticated');
-  
-  QUESTION_BANK = []; // Clear local memory
-  
-  // Show overlay again and reset views
-  checkAuthState();
-  switchTab('dashboard-view');
+// Update Chapters Dropdown according to active course
+function updateChapterFilterDropdown() {
+  const select = document.getElementById('chapter-filter');
+  if (!select) return;
+  const list = currentCourse === 'NVHQ' ? NVHQ_CHAPTERS : VNYLT_CHAPTERS;
+  select.innerHTML = list.map(item => `<option value="${item.value}">${item.label}</option>`).join('');
+  select.value = selectedChapter;
 }
 
 // Initialize Application
 window.addEventListener('DOMContentLoaded', async () => {
-  loadProgress();
+  // 1. Load local fallback datasets
+  if (typeof NVHQ_FALLBACK_QUESTIONS !== 'undefined' && Array.isArray(NVHQ_FALLBACK_QUESTIONS)) {
+    NVHQ_QUESTION_BANK = NVHQ_FALLBACK_QUESTIONS;
+  }
+  if (typeof VNYLT_QUESTIONS !== 'undefined' && Array.isArray(VNYLT_QUESTIONS)) {
+    VNYLT_QUESTION_BANK = VNYLT_QUESTIONS;
+  }
+
   initTheme();
   checkAuthState();
-  
-  const savedToken = localStorage.getItem('nvhq_session_token');
-  if (savedToken) {
-    const success = await loadQuestionsFromServer(savedToken);
-    if (success) {
-      renderDashboard();
-    }
-  } else {
-    renderDashboard();
-  }
-  
+
+  // 2. Set saved or default course
+  const savedCourse = localStorage.getItem('nvhq_current_course') || 'NVHQ';
+  switchCourse(savedCourse);
+
   switchTab('dashboard-view');
   initExamCountdown();
   initDonationModal();
-  
-  // Connect toggle and logout buttons
-  document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-  document.getElementById('logout-btn').addEventListener('click', logout);
-  
+
+  // 3. Connect theme toggle button
+  const themeToggleBtn = document.getElementById('theme-toggle');
+  if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+
+  // 4. Fetch updated questions from Supabase in background
+  loadQuestionsFromServer("19b55cd13309c5903780fa483ee13dc0");
+
   // Bind keyboard navigation keys (Enter, ArrowLeft, ArrowRight)
   window.addEventListener('keydown', (e) => {
     // If the login screen is active, let the default form submission handle Enter
@@ -336,22 +276,25 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 // Load progress from LocalStorage
 function loadProgress() {
+  const prefix = currentCourse === 'VNYLT' ? 'vnylt_' : 'nvhq_';
   try {
-    const mastered = localStorage.getItem('nvhq_mastered');
-    if (mastered) masteredQuestions = new Set(JSON.parse(mastered));
+    const mastered = localStorage.getItem(prefix + 'mastered');
+    masteredQuestions = mastered ? new Set(JSON.parse(mastered)) : new Set();
     
-    const review = localStorage.getItem('nvhq_review');
-    if (review) reviewQuestions = new Set(JSON.parse(review));
+    const review = localStorage.getItem(prefix + 'review');
+    reviewQuestions = review ? new Set(JSON.parse(review)) : new Set();
   } catch (e) {
-    console.error("Error loading progress:", e);
+    masteredQuestions = new Set();
+    reviewQuestions = new Set();
   }
 }
 
 // Save progress to LocalStorage
 function saveProgress() {
+  const prefix = currentCourse === 'VNYLT' ? 'vnylt_' : 'nvhq_';
   try {
-    localStorage.setItem('nvhq_mastered', JSON.stringify([...masteredQuestions]));
-    localStorage.setItem('nvhq_review', JSON.stringify([...reviewQuestions]));
+    localStorage.setItem(prefix + 'mastered', JSON.stringify([...masteredQuestions]));
+    localStorage.setItem(prefix + 'review', JSON.stringify([...reviewQuestions]));
     renderDashboard();
   } catch (e) {
     console.error("Error saving progress:", e);
@@ -388,18 +331,16 @@ function renderDashboard() {
   document.getElementById('metric-mastered').textContent = masteredQuestions.size;
   document.getElementById('metric-flagged').textContent = reviewQuestions.size;
   
-  // Dynamically update dashboard welcome message if user is logged in
-  const savedName = localStorage.getItem('nvhq_hoten');
-  const savedMsv = localStorage.getItem('nvhq_msv');
-  const savedClass = localStorage.getItem('nvhq_lop');
-  if (savedName && savedMsv && savedClass) {
-    const welcomeTitle = document.querySelector('#view-dashboard-view h2');
-    if (welcomeTitle) {
-      welcomeTitle.textContent = `Chào mừng ${savedName}!`;
-    }
-    const welcomeDesc = document.querySelector('#view-dashboard-view p');
-    if (welcomeDesc) {
-      welcomeDesc.innerHTML = `Chào mừng bạn đến với hệ thống ôn tập Nghiệp vụ Hải quan (NVHQ) dành riêng cho lớp <strong>${escapeHtml(savedClass)}</strong>, mã số sinh viên <strong>${escapeHtml(savedMsv)}</strong>. Toàn bộ ${QUESTION_BANK.length} câu hỏi chính thức đã được trích xuất an toàn và giải mã đáp án chính xác!`;
+  const welcomeTitle = document.querySelector('#view-dashboard-view h2');
+  if (welcomeTitle) {
+    welcomeTitle.textContent = currentCourse === 'NVHQ' ? 'Chào mừng bạn đến với Ôn tập NVHQ!' : 'Chào mừng bạn đến với Ôn thi VNYLT 2026!';
+  }
+  const welcomeDesc = document.querySelector('#view-dashboard-view p');
+  if (welcomeDesc) {
+    if (currentCourse === 'NVHQ') {
+      welcomeDesc.innerHTML = `Hệ thống ôn tập <strong>Nghiệp vụ Hải quan (NVHQ)</strong>. Toàn bộ <strong>${QUESTION_BANK.length} câu hỏi</strong> chính thức đã mở khóa tự do, sẵn sàng cho bạn ôn tập và thi thử!`;
+    } else {
+      welcomeDesc.innerHTML = `Hệ thống ôn thi <strong>Cuộc thi Vận tải & Logistics Trẻ Việt Nam (VNYLT)</strong>. Trọn bộ <strong>${QUESTION_BANK.length} câu hỏi</strong> chuẩn từ các đợt thi và ngân hàng đề thi đã sẵn sàng!`;
     }
   }
 }
@@ -473,10 +414,12 @@ function handleSearch() {
 // Filter Helper
 function getFilteredQuestions() {
   return QUESTION_BANK.filter(q => {
-    // 1. Chapter filter
+    // 1. Chapter / Set filter
     const matchesChapter = selectedChapter === 'all' || 
                            q.maCauHoi.startsWith(selectedChapter) || 
-                           (q.tenChuDe && q.tenChuDe.includes(selectedChapter));
+                           (q.tenChuDe && q.tenChuDe.includes(selectedChapter)) ||
+                           (q.boDot && q.boDot === selectedChapter) ||
+                           (q.originalId && q.originalId.includes(selectedChapter));
     
     // 2. Search query filter
     let matchesSearch = true;
@@ -484,10 +427,12 @@ function getFilteredQuestions() {
       const questionText = (q.cauHoi || '').toLowerCase();
       const topicText = (q.tenChuDe || '').toLowerCase();
       const optionsText = (q.options || []).map(o => (o.text || '').toLowerCase()).join(' ');
+      const noteText = (q.ghiChu || '').toLowerCase();
       
       matchesSearch = questionText.includes(searchQuery) || 
                       topicText.includes(searchQuery) || 
-                      optionsText.includes(searchQuery);
+                      optionsText.includes(searchQuery) ||
+                      noteText.includes(searchQuery);
     }
     
     return matchesChapter && matchesSearch;
@@ -722,20 +667,26 @@ function initPracticeMode() {
   document.getElementById('practice-active').style.display = 'none';
   
   if (selectedChapter !== 'all') {
-    practiceQuestions = QUESTION_BANK.filter(q => q.maCauHoi.startsWith(selectedChapter) || (q.tenChuDe && q.tenChuDe.includes(selectedChapter)));
+    practiceQuestions = QUESTION_BANK.filter(q => 
+      q.maCauHoi.startsWith(selectedChapter) || 
+      (q.tenChuDe && q.tenChuDe.includes(selectedChapter)) ||
+      (q.boDot && q.boDot === selectedChapter)
+    );
+  } else {
+    practiceQuestions = [...QUESTION_BANK];
+  }
+
+  if (practiceQuestions.length > 0) {
+    document.getElementById('practice-initial').style.display = 'none';
+    document.getElementById('practice-active').style.display = 'block';
     
-    if (practiceQuestions.length > 0) {
-      document.getElementById('practice-initial').style.display = 'none';
-      document.getElementById('practice-active').style.display = 'block';
-      
-      practiceCurrentIndex = 0;
-      renderPracticeQuestion();
-    } else {
-      document.getElementById('practice-initial').innerHTML = `
-        <i class="fa-solid fa-triangle-exclamation" style="font-size: 64px; color: var(--warning); margin-bottom: 16px;"></i>
-        <h3 style="font-family: var(--font-title); font-size: 22px; font-weight: 800;">Chương này hiện chưa có câu hỏi nào.</h3>
-      `;
-    }
+    practiceCurrentIndex = 0;
+    renderPracticeQuestion();
+  } else {
+    document.getElementById('practice-initial').innerHTML = `
+      <i class="fa-solid fa-triangle-exclamation" style="font-size: 64px; color: var(--warning); margin-bottom: 16px;"></i>
+      <h3 style="font-family: var(--font-title); font-size: 22px; font-weight: 800;">Phần này hiện chưa có câu hỏi nào.</h3>
+    `;
   }
 }
 
@@ -743,7 +694,7 @@ function renderPracticeQuestion() {
   const q = practiceQuestions[practiceCurrentIndex];
   if (!q) return;
   
-  document.getElementById('practice-topic-name').textContent = q.tenChuDe || "Luyện tập theo chương";
+  document.getElementById('practice-topic-name').textContent = q.tenChuDe || "Luyện tập";
   document.getElementById('practice-counter').textContent = `Câu ${practiceCurrentIndex + 1}/${practiceQuestions.length}`;
   
   document.getElementById('practice-question-text').textContent = `Câu ${practiceCurrentIndex + 1}. ${q.cauHoi}`;
@@ -799,14 +750,23 @@ function selectPracticeOption(element, key) {
   // Show detailed feedback box
   const feedbackBox = document.getElementById('practice-explanation-box');
   feedbackBox.style.display = 'block';
+  
+  let noteHtml = '';
+  if (q.ansText) {
+    noteHtml += `<div style="margin-top:6px; font-size:13px; opacity:0.95;">• <strong>Nội dung:</strong> ${escapeHtml(q.ansText)}</div>`;
+  }
+  if (q.ghiChu) {
+    noteHtml += `<div style="margin-top:4px; font-size:12.5px; opacity:0.9;"><i class="fa-solid fa-lightbulb"></i> <strong>Ghi chú:</strong> ${escapeHtml(q.ghiChu)}</div>`;
+  }
+
   if (isCorrect) {
     feedbackBox.className = 'notice success';
-    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Chính xác!</strong> Đáp án đúng là <strong>${q.correctAnswer}</strong>.`;
+    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> <strong>Chính xác!</strong> Đáp án đúng là <strong>${q.correctAnswer}</strong>.${noteHtml}`;
     masteredQuestions.add(q.maCauHoi);
     reviewQuestions.delete(q.maCauHoi);
   } else {
     feedbackBox.className = 'notice error';
-    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <strong>Sai rồi!</strong> Bạn đã chọn ${key}. Đáp án đúng là <strong>${q.correctAnswer}</strong>.`;
+    feedbackBox.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> <strong>Sai rồi!</strong> Bạn đã chọn ${key}. Đáp án đúng là <strong>${q.correctAnswer}</strong>.${noteHtml}`;
     reviewQuestions.add(q.maCauHoi);
     masteredQuestions.delete(q.maCauHoi);
   }
@@ -882,6 +842,7 @@ function renderNextQuestionBatch() {
       </div>
       <div class="list-item-title">${q.cauHoi}</div>
       <div class="list-item-options">${optHtml}</div>
+      ${q.ghiChu ? `<div style="margin-top: 10px; font-size: 12.5px; color: var(--primary); background: var(--primary-light); padding: 8px 12px; border-radius: 8px;"><i class="fa-solid fa-lightbulb"></i> <strong>Ghi chú:</strong> ${escapeHtml(q.ghiChu)}</div>` : ''}
     `;
     fragment.appendChild(card);
   }
