@@ -79,16 +79,95 @@ function normalizeString(str) {
     .replace(/\s+/g, ' ');
 }
 
-// Open access mode: No login overlay required
-function checkAuthState() {
-  const overlay = document.getElementById('login-overlay');
-  if (overlay) overlay.style.display = 'none';
-  const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) logoutBtn.style.display = 'none';
+// ==================== SYSTEM LOCK & ACCESS CONTROL ====================
+function checkLockState() {
+  const isUnlocked = localStorage.getItem('nvhq_site_unlocked') === 'true';
+  const lockOverlay = document.getElementById('lock-overlay');
+  const relockBtn = document.getElementById('relock-btn');
+  const statusBadge = document.getElementById('header-status-badge');
 
-  if (typeof updateAIChatVisibility === 'function') {
-    updateAIChatVisibility();
+  if (isUnlocked) {
+    if (lockOverlay) {
+      lockOverlay.classList.add('hidden');
+    }
+    if (relockBtn) {
+      relockBtn.style.display = 'flex';
+    }
+    if (statusBadge) {
+      statusBadge.innerHTML = `
+        <span style="font-size: 11.5px; font-weight: 800; color: #10b981; background: rgba(16, 185, 129, 0.15); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.3);">
+          <i class="fa-solid fa-lock-open"></i> ĐÃ MỞ KHÓA
+        </span>
+      `;
+    }
+    if (typeof updateAIChatVisibility === 'function') {
+      updateAIChatVisibility();
+    }
+  } else {
+    if (lockOverlay) {
+      lockOverlay.classList.remove('hidden');
+    }
+    if (relockBtn) {
+      relockBtn.style.display = 'none';
+    }
+    if (statusBadge) {
+      statusBadge.innerHTML = `
+        <span style="font-size: 11.5px; font-weight: 800; color: #ef4444; background: rgba(239, 68, 68, 0.15); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+          <i class="fa-solid fa-lock"></i> ĐÃ TẠM KHÓA
+        </span>
+      `;
+    }
+    // Hide AI chat floating button when site is locked
+    const aiToggle = document.getElementById('ai-chat-toggle');
+    const aiWindow = document.getElementById('ai-chat-window');
+    if (aiToggle) aiToggle.style.display = 'none';
+    if (aiWindow) aiWindow.style.display = 'none';
   }
+}
+
+function checkAuthState() {
+  checkLockState();
+}
+
+function togglePasscodeSection() {
+  const container = document.getElementById('passcode-container');
+  if (!container) return;
+  const isHidden = container.style.display === 'none' || !container.style.display;
+  container.style.display = isHidden ? 'block' : 'none';
+  if (isHidden) {
+    const input = document.getElementById('unlock-passcode');
+    if (input) input.focus();
+  }
+}
+
+function verifyUnlockPasscode() {
+  const input = document.getElementById('unlock-passcode');
+  const errorMsg = document.getElementById('passcode-error');
+  if (!input) return;
+
+  const entered = input.value.trim().toLowerCase();
+  const validPasscodes = ['banhmicampha', 'nvhq2026', 'chien2026', '330a', 'ngocchien', 'admin'];
+
+  if (validPasscodes.includes(entered)) {
+    if (errorMsg) errorMsg.style.display = 'none';
+    localStorage.setItem('nvhq_site_unlocked', 'true');
+    checkLockState();
+  } else {
+    if (errorMsg) errorMsg.style.display = 'block';
+    input.classList.add('shake');
+    setTimeout(() => input.classList.remove('shake'), 400);
+  }
+}
+
+function relockWebsite() {
+  if (confirm("Bạn có chắc chắn muốn khóa lại website?")) {
+    localStorage.removeItem('nvhq_site_unlocked');
+    checkLockState();
+  }
+}
+
+function initExamCountdown() {
+  checkLockState();
 }
 
 // Dynamic server-side question bank loading (Supabase)
@@ -219,9 +298,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Bind keyboard navigation keys (Enter, ArrowLeft, ArrowRight)
   window.addEventListener('keydown', (e) => {
-    // If the login screen is active, let the default form submission handle Enter
-    const overlay = document.getElementById('login-overlay');
-    if (overlay && !overlay.classList.contains('hidden')) {
+    // If the lock screen is active, don't trigger quiz navigation
+    const lockOverlay = document.getElementById('lock-overlay');
+    if (lockOverlay && !lockOverlay.classList.contains('hidden') && lockOverlay.style.display !== 'none') {
       return;
     }
     
@@ -994,6 +1073,13 @@ function initDonationModal() {
         modal.style.display = 'none';
       }
     });
+  }
+}
+
+function openDonateModal() {
+  const modal = document.getElementById('donate-modal');
+  if (modal) {
+    modal.style.display = 'flex';
   }
 }
 

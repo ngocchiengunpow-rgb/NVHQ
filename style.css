@@ -1432,3 +1432,376 @@ footer {
   color: var(--text-muted);
 }
 
+/* ==================== SYSTEM LOCK OVERLAY & 330+ STUDENTS SHOWCASE ==================== */
+#lock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
+  background: var(--bg-gradient);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  padding: 24px 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  opacity: 1;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#lock-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-20px);
+  display: none !important;
+}
+
+.lock-card {
+  max-width: 620px;
+  width: 100%;
+  padding: 32px 28px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 28px;
+  box-shadow: var(--shadow-lg), 0 0 50px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  margin: auto;
+}
+
+.lock-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(37, 99, 235, 0.08) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lock-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.lock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
+  margin-bottom: 16px;
+}
+
+.lock-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--card-border);
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.lock-card h2 {
+  font-family: var(--font-title);
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.lock-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.lock-notice-box {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 18px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  text-align: left;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.lock-notice-icon {
+  font-size: 24px;
+  color: var(--danger);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.lock-notice-text {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text-main);
+}
+
+.lock-notice-text strong {
+  display: block;
+  font-size: 14.5px;
+  color: var(--danger-text);
+  margin-bottom: 4px;
+}
+
+.lock-notice-text p {
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.lock-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.lock-contact-btn {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
+  color: white !important;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transition: all var(--transition-fast);
+  border: none;
+  cursor: pointer;
+}
+
+.lock-contact-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+}
+
+.lock-donate-btn {
+  background: var(--card-bg);
+  color: var(--warning-text);
+  border: 1.5px solid var(--warning);
+  padding: 12px 20px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 13.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.lock-donate-btn:hover {
+  background: var(--warning-light);
+  transform: translateY(-2px);
+}
+
+/* 330+ Students Showcase Styling */
+.lock-showcase {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 18px 20px;
+  margin-bottom: 18px;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+}
+
+[data-theme="dark"] .lock-showcase {
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.showcase-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 12px;
+  color: var(--warning-text);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 14px;
+}
+
+.showcase-header i {
+  color: #f59e0b;
+}
+
+.showcase-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.showcase-stat-item {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 12px 6px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+}
+
+.showcase-stat-item .stat-number {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.1;
+}
+
+.showcase-stat-item .stat-label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.showcase-testimonials {
+  background: var(--primary-light);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.showcase-testimonials p {
+  font-size: 12.5px;
+  color: var(--primary-light-text);
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}
+
+.showcase-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.showcase-chips .chip {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--card-border);
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.showcase-chips .chip i {
+  color: var(--primary);
+  font-size: 10px;
+}
+
+/* Passcode Unlock Box */
+.lock-passcode-box {
+  padding: 14px 12px 6px 12px;
+  border-top: 1px dashed var(--card-border);
+}
+
+.passcode-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color var(--transition-fast);
+  padding: 4px 8px;
+}
+
+.passcode-toggle-btn:hover {
+  color: var(--primary);
+}
+
+.passcode-input-group {
+  display: flex;
+  gap: 8px;
+  max-width: 360px;
+  margin: 10px auto 0 auto;
+}
+
+.passcode-input-group input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  color: var(--text-main);
+  font-size: 13.5px;
+  outline: none;
+  font-family: inherit;
+}
+
+.passcode-input-group input:focus {
+  border-color: var(--primary);
+}
+
+.passcode-input-group button {
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.lock-footer {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.lock-footer a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .lock-card {
+    padding: 24px 16px;
+  }
+  .showcase-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .lock-actions {
+    flex-direction: column;
+  }
+  .lock-contact-btn, .lock-donate-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+

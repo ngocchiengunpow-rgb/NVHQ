@@ -6,7 +6,7 @@
   <title>Ôn tập Nghiệp vụ Hải quan (NVHQ)</title>
   <!-- FontAwesome for beautiful modern UI icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="style.css?v=2.4.0">
+  <link rel="stylesheet" href="style.css?v=2.6.0">
   <!-- Supabase CDN (uncomment when enabling Supabase Online mode) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="icon" type="image/png" href="banhmicamphalogo.png">
@@ -28,20 +28,22 @@
         </div>
       </div>
 
-      <!-- Integrated Header Countdown -->
+      <!-- Integrated Header Countdown / Status -->
       <div class="header-countdown">
         <div class="countdown-label">
-          <i class="fa-solid fa-unlock timer-pulse"></i>
-          <span>Hệ thống mở ôn tập tự do:</span>
+          <i class="fa-solid fa-lock timer-pulse"></i>
+          <span id="header-status-label">Hệ thống:</span>
         </div>
-        <div class="countdown-digits">
-          <span class="digit-box cd-days">00</span><span class="unit">d</span>
-          <span class="digit-box cd-hours">00</span><span class="unit">h</span>
-          <span class="digit-box cd-mins">00</span><span class="unit">m</span>
-          <span class="digit-box cd-secs">00</span><span class="unit">s</span>
+        <div class="countdown-digits" id="header-status-badge">
+          <span style="font-size: 11.5px; font-weight: 800; color: #ef4444; background: rgba(239, 68, 68, 0.15); padding: 4px 10px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.3);">
+            <i class="fa-solid fa-lock"></i> ĐÃ TẠM KHÓA
+          </span>
         </div>
       </div>
       <div class="header-controls">
+        <button id="relock-btn" class="theme-btn" title="Khóa lại website" onclick="relockWebsite()" style="display: none; color: var(--danger);">
+          <i class="fa-solid fa-lock"></i>
+        </button>
         <button id="theme-toggle" class="theme-btn" title="Chuyển chế độ Sáng/Tối">
           <i class="fa-solid fa-moon"></i>
         </button>
@@ -375,6 +377,111 @@
 
   </div>
 
+  <!-- System Lock & 330+ Students Achievement Showcase Overlay -->
+  <div id="lock-overlay">
+    <div class="lock-card glass-card animate-fade-in">
+      <!-- Status Badge -->
+      <div class="lock-badge">
+        <i class="fa-solid fa-lock"></i>
+        <span>HỆ THỐNG TẠM KHÓA TRUY CẬP</span>
+      </div>
+
+      <!-- App Branding -->
+      <div class="lock-branding">
+        <img src="banhmicamphalogo.png" alt="Logo" class="lock-logo">
+        <h2>Ôn tập Nghiệp vụ Hải quan & VNYLT</h2>
+        <p class="lock-subtitle">Phát triển bởi <strong style="color: var(--primary);">Bánh Mì Cẩm Phả (Nguyễn Ngọc Chiến)</strong></p>
+      </div>
+
+      <!-- Main Lock Notice -->
+      <div class="lock-notice-box">
+        <div class="lock-notice-icon">
+          <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+        <div class="lock-notice-text">
+          <strong>Website hiện đã đóng truy cập công khai</strong>
+          <p>Kỳ thi kết thúc hoặc website đang trong chế độ khóa bảo trì. Nếu bạn muốn sử dụng website để ôn tập môn Nghiệp vụ Hải quan hoặc ôn thi Logistics VNYLT, <strong>xin vui lòng liên hệ admin</strong> để được hỗ trợ cấp quyền truy cập!</p>
+        </div>
+      </div>
+
+      <!-- Contact & Support Buttons -->
+      <div class="lock-actions">
+        <a href="https://tinyurl.com/banhmicampha" target="_blank" class="lock-contact-btn">
+          <i class="fa-brands fa-facebook-messenger"></i> Liên hệ Bánh Mì Cẩm Phả
+        </a>
+        <button type="button" class="lock-donate-btn" onclick="openDonateModal()">
+          <i class="fa-solid fa-mug-hot"></i> Mời cà phê / Ủng hộ web
+        </button>
+      </div>
+
+      <!-- Showcase Section: 330+ Sinh viên đạt A/A+ -->
+      <div class="lock-showcase">
+        <div class="showcase-header">
+          <i class="fa-solid fa-award"></i>
+          <span>Thành tích xuất sắc: 330+ Sinh viên đạt điểm A & A+</span>
+        </div>
+
+        <div class="showcase-stats-grid">
+          <div class="showcase-stat-item">
+            <div class="stat-number">330+</div>
+            <div class="stat-label">Sinh viên đạt điểm A & A+</div>
+          </div>
+          <div class="showcase-stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Tỉ lệ qua môn & điểm cao</div>
+          </div>
+          <div class="showcase-stat-item">
+            <div class="stat-number">849+</div>
+            <div class="stat-label">Câu hỏi trúng sát đề thi</div>
+          </div>
+          <div class="showcase-stat-item">
+            <div class="stat-number">4.9/5★</div>
+            <div class="stat-label">Độ uy tín & tin cậy</div>
+          </div>
+        </div>
+
+        <div class="showcase-testimonials">
+          <p>
+            <i class="fa-solid fa-quote-left" style="opacity: 0.5; margin-right: 4px;"></i>
+            Hơn <strong>330+ sinh viên</strong> thuộc các khóa <strong>KTB64ĐH, KTN64ĐH, LQC63ĐH, KTB62, KTB61</strong> đã tin tưởng sử dụng website và đạt kết quả xuất sắc <strong>điểm 9.0 - 10.0 (A và A+)</strong>. Toàn bộ câu hỏi chuẩn 100%, giải thích cặn kẽ và tối ưu thời gian ôn luyện!
+          </p>
+        </div>
+
+        <div class="showcase-chips">
+          <span class="chip"><i class="fa-solid fa-graduation-cap"></i> KTB64ĐH</span>
+          <span class="chip"><i class="fa-solid fa-graduation-cap"></i> KTN64ĐH</span>
+          <span class="chip"><i class="fa-solid fa-graduation-cap"></i> LQC63ĐH</span>
+          <span class="chip"><i class="fa-solid fa-graduation-cap"></i> KTB62ĐH</span>
+          <span class="chip"><i class="fa-solid fa-graduation-cap"></i> KTB61CL</span>
+          <span class="chip"><i class="fa-solid fa-trophy"></i> VNYLT Logistics 2026</span>
+        </div>
+      </div>
+
+      <!-- Secret Passcode Unlock Accordion -->
+      <div class="lock-passcode-box">
+        <button type="button" class="passcode-toggle-btn" onclick="togglePasscodeSection()">
+          <i class="fa-solid fa-key"></i> <span>Bạn có mã mở khóa? Nhấp vào đây</span>
+        </button>
+        <div id="passcode-container" style="display: none;">
+          <div class="passcode-input-group">
+            <input type="password" id="unlock-passcode" placeholder="Nhập mã mở khóa..." onkeydown="if(event.key==='Enter') verifyUnlockPasscode()">
+            <button type="button" class="btn btn-primary" onclick="verifyUnlockPasscode()">
+              Mở khóa
+            </button>
+          </div>
+          <p id="passcode-error" style="display: none; color: var(--danger); font-size: 12px; margin-top: 6px; font-weight: 600;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Mã mở khóa không chính xác!
+          </p>
+        </div>
+      </div>
+
+      <!-- Lock Screen Footer -->
+      <div class="lock-footer">
+        <p>© 2026 Bản quyền thuộc về <a href="https://tinyurl.com/banhmicampha" target="_blank">Bánh Mì Cẩm Phả</a></p>
+      </div>
+    </div>
+  </div>
+
   <!-- Donation Modal Overlay -->
   <div id="donate-modal" class="modal-overlay" style="display: none;">
     <div class="donate-card glass-card">
@@ -396,6 +503,6 @@
   <script src="config.js"></script>
   <script src="nvhq_data.js"></script>
   <script src="vnylt_data.js"></script>
-  <script src="app.js?v=2.5.0"></script>
+  <script src="app.js?v=2.6.0"></script>
 </body>
 </html>
